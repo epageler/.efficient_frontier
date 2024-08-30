@@ -45,7 +45,7 @@ def overview() -> None:
     st.markdown("It also allows you to compare the current diversification of your portfolio to a selected portfolio on the Efficient Frontier.")
 
     st.markdown("### Instructions:")
-    with st.expander("Instructions to Use Application. (Click to Hide/Show)", expanded=False):
+    with st.expander("Instructions to Use Application. (Click to Hide/Show)", expanded=True):
         st.markdown(
             "To get started, follow the Steps listed in the sidebar on the left.")
         st.markdown("If you want to determine the Efficient Frontier for your own list of investments, select \"Custom\" scenario and drag & drop an Excel file from your computer.")
@@ -263,7 +263,7 @@ def calc_port_stats(inv_and_constraints, risk_free_rate, adj_daily_close):
 def display_configuration() -> None:
     with st.expander("Analysis Configuration (Click to Hide / Show)", expanded=True,):
         if not st.session_state.names_and_inceptions.equals(pd.DataFrame()):
-            st.markdown("#### Analysis Configuration:")
+            st.markdown("### Analysis Configuration:")
             st.markdown("###### Investments & Constraints:")
             df2: pd.DataFrame = st.session_state.names_and_inceptions
             df2["Inception"] = df2["Inception"].dt.strftime("%Y-%m-%d")
@@ -301,7 +301,7 @@ def display_growth_of_10000_table(tickers_and_constraints: pd.DataFrame, growth_
     df = growth_of_10000
     df.index = pd.to_datetime(df.index).strftime('%Y-%m-%d')
     with st.expander("Growth of $10,000 Table (Click to Hide / Show)", expanded=True):
-        st.markdown("#### Growth of $10,000")
+        st.markdown("### Growth of $10,000:")
         tickers: list[str] = tickers_and_constraints["Ticker"]
         # adj_daily_close = yf_api.get_adj_daily_close(tickers, start, end)
         # growth_of_10000 = ps.get_growth_10000(adj_daily_close)
@@ -324,7 +324,7 @@ def display_growth_of_10000_graph(tickers_and_constraints: pd.DataFrame, growth_
             x=growth_of_10000.index,  # date column
             y=growth_of_10000.columns[0: len(
                 growth_of_10000.columns)],   # Value on date
-            title="Growth of $10,000",
+            title="Growth of $10,000:",
         )
         fig.update_traces(
             customdata=customdata_set,
@@ -374,7 +374,7 @@ def display_return_and_sd_table_and_graph(
         df = df.rename(columns={"index": "Ticker"})
         col1, col2 = st.columns([6, 6])
         with col1:
-            st.markdown("##### Annual Return, Standard Deviation, & Sharpe")
+            st.markdown("### Annual Return, Standard Deviation, & Sharpe:")
             st.dataframe(df.style.format(
                 {"Return": "{:.2%}", "Std Dev": "{:.2%}", "Sharpe": "{:.2f}"}))
         with col2:
@@ -443,7 +443,7 @@ def display_correlation_matrix(cm: pd.DataFrame, names_and_inceptions: pd.DataFr
         fig.update_traces()
 
         fig.update_layout(
-            title="Investment Correlation Matrix",
+            title="Investment Correlation Matrix:",
             title_font_size=24,
             # title_x=0.5,
             autosize=False,
@@ -457,7 +457,7 @@ def display_correlation_matrix(cm: pd.DataFrame, names_and_inceptions: pd.DataFr
 
 
 def display_efficient_frontier(ef: pd.DataFrame):
-    st.markdown("#### Select Point on Efficient Frontier")
+    st.markdown("### Select Point on Efficient Frontier (by using the buttons below):")
 
     if st.session_state.selected_port == None:
         st.session_state.selected_port = ef['Sharpe'].idxmax()
