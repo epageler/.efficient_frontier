@@ -97,8 +97,8 @@ def sidebar():
         old_tickers_and_constraints = st.session_state.tickers_and_constraints
         options: list[str] = ["Major Asset Classes, Constrained",
                               "Major Asset Classes, Unconstrained",
-                              "S&P Industry Sectors, Constrained",
-                              "S&P Industry Sectors, Unconstrained",
+                              "Sector SPDR ETFs, Constrained",
+                              "Sector SPDR ETFs, Unconstrained",
                               "Custom"]
         opt = st.selectbox("Select Scenario", options, index=None,
                            help='Select from list of pre-configured scenario. Or, choose \"Custom\" & drag & drop Excel file from your computer.')
