@@ -475,7 +475,7 @@ def display_efficient_frontier(ef: pd.DataFrame):
     col1, col2, col3, col4, col5 = st.columns(5)
     with col1:
         st.button(
-            "Min Risk Portfolio", on_click=set_portfolio, args=(0, None), type="primary"
+            "Min Risk & Return", on_click=set_portfolio, args=(0, None), type="primary"
         )
     with col2:
         st.button(
