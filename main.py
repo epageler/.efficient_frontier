@@ -457,7 +457,7 @@ def display_correlation_matrix(cm: pd.DataFrame, names_and_inceptions: pd.DataFr
 
 
 def display_efficient_frontier(ef: pd.DataFrame):
-    st.markdown("##### Efficient Frontier")
+    st.markdown("#### Select Point on Efficient Frontier")
 
     if st.session_state.selected_port == None:
         st.session_state.selected_port = ef['Sharpe'].idxmax()
