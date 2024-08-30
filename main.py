@@ -41,7 +41,7 @@ def overview() -> None:
         "##### This app determines the Efficient Frontier for a specified list of investments."
     )
     st.markdown(
-        "The objective is to determine the optimum diversification of an investment portfolio. The optimum portfolio is defined as one that maximizes return for a give level of risk, as measured by Standard Deviation.")
+        "The objective is to determine the optimum diversification of an investment portfolio. The optimum portfolio is defined as one that maximizes return for a given level of risk, as measured by Standard Deviation.")
     st.markdown("It also allows you to compare the current diversification of your portfolio to a selected portfolio on the Efficient Frontier.")
 
     st.markdown("### Instructions:")
