@@ -493,7 +493,7 @@ def display_efficient_frontier(ef: pd.DataFrame):
         )
     with col4:
         st.button(
-            "Incr Risk & Return",
+            "Increase Risk & Return",
             on_click=set_portfolio,
             args=(None, 1),
             type="primary",
