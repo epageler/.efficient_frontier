@@ -510,7 +510,6 @@ def display_efficient_frontier(ef: pd.DataFrame):
     col1, col2 = st.columns(2)
     with col1:
         st.markdown(f"#### Efficient Frontier:")
-        st.markdown('---')
         selected_portfolio = ef.iloc[st.session_state.selected_port]
 
         fig = go.Figure(
@@ -583,7 +582,6 @@ def display_efficient_frontier(ef: pd.DataFrame):
 
     with col2:
         st.markdown(f"#### Portfolio Diversification:")
-        st.markdown('---')
         df = ef.iloc[st.session_state.selected_port]
         selected_port_tickers = df.index.tolist()[3:]
         selected_port_diversification = df.iloc[3:len(df)]
