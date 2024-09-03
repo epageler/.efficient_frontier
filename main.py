@@ -96,8 +96,10 @@ def sidebar():
         st.markdown(
             "#### Step 1: Select Pre-Configured Scenario or Select Custom Excel File")
         old_tickers_and_constraints = st.session_state.tickers_and_constraints
-        options: list[str] = ["Major Asset Classes, Constrained",
-                              "Major Asset Classes, Unconstrained",
+        options: list[str] = ["Basic Asset Classes, Constrained",
+                              "Basic Asset Classes, Unonstrained",
+                              "Extended Asset Classes, Constrained",
+                              "Extended Asset Classes, Unconstrained",
                               "Sector SPDR ETFs, Constrained",
                               "Sector SPDR ETFs, Unconstrained",
                               "Custom"]
@@ -105,21 +107,29 @@ def sidebar():
                            help='Select from list of pre-configured scenario. Or, choose \"Custom\" & drag & drop Excel file from your computer.')
         if opt == options[0]:
             st.session_state.tickers_and_constraints = pd.read_excel(
-                "./data/asset_classes_constrained.xlsx"
+                "./data/basic_asset_classes_constrained.xlsx"
             )
-        elif opt == options[1]:
+        if opt == options[1]:
             st.session_state.tickers_and_constraints = pd.read_excel(
-                "./data/asset_classes_unconstrained.xlsx"
+                "./data/basic_asset_classes_constrained.xlsx"
             )
-        elif opt == options[2]:
+        if opt == options[2]:
             st.session_state.tickers_and_constraints = pd.read_excel(
-                "./data/industry_sectors_constrained.xlsx"
+                "./data/extended_asset_classes_constrained.xlsx"
             )
         elif opt == options[3]:
             st.session_state.tickers_and_constraints = pd.read_excel(
-                "./data/industry_sectors_unconstrained.xlsx"
+                "./data/extended_asset_classes_unconstrained.xlsx"
             )
         elif opt == options[4]:
+            st.session_state.tickers_and_constraints = pd.read_excel(
+                "./data/industry_sectors_constrained.xlsx"
+            )
+        elif opt == options[5]:
+            st.session_state.tickers_and_constraints = pd.read_excel(
+                "./data/industry_sectors_unconstrained.xlsx"
+            )
+        elif opt == options[6]:
             f = st.file_uploader("Select Excel File")
             if f:
                 st.session_state.tickers_and_constraints = pd.read_excel(f)
