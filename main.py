@@ -111,7 +111,7 @@ def sidebar():
             )
         elif opt == options[1]:
             st.session_state.tickers_and_constraints = pd.read_excel(
-                "./data/basic_asset_classes_constrained.xlsx"
+                "./data/basic_asset_classes_unconstrained.xlsx"
             )
         elif opt == options[2]:
             st.session_state.tickers_and_constraints = pd.read_excel(
