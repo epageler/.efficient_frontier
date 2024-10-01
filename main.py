@@ -105,19 +105,19 @@ def sidebar():
                            help='Select from list of pre-configured scenario. Or, choose \"Custom\" & drag & drop Excel file from your computer.')
         if opt == options[0]:
             st.session_state.tickers_and_constraints = pd.read_excel(
-                "./data/basic_asset_classes_constrained.xlsx"
+                "./data/0_basic_asset_classes_constrained.xlsx"
             )
         elif opt == options[1]:
             st.session_state.tickers_and_constraints = pd.read_excel(
-                "./data/basic_asset_classes_unconstrained.xlsx"
+                "./data/1_basic_asset_classes_unconstrained.xlsx"
             )
         elif opt == options[2]:
             st.session_state.tickers_and_constraints = pd.read_excel(
-                "./data/basic_asset_classes_plus_sectors_constrained.xlsx"
+                "./data/2_basic_asset_classes_plus_sectors_constrained.xlsx"
             )
         elif opt == options[3]:
             st.session_state.tickers_and_constraints = pd.read_excel(
-                "./data/basic_asset_classes_plus_sectors_unconstrained.xlsx"
+                "./data/3_basic_asset_classes__plus_sectors_unconstrained.xlsx"
             )
         elif opt == options[4]:
             f = st.file_uploader("Select Excel File")
