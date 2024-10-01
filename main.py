@@ -624,7 +624,7 @@ def display_efficient_frontier(ef: pd.DataFrame):
             selected_portfolio['Std Dev']:.2%}   Sharpe Ratio: {selected_portfolio['Sharpe']:.2f}")
 
     # Display Selected Portfolio (+/-) 1 & 2 Std Dev's
-    data: dict = {'Probability': ['68% Probability (+/- 1 Std Dev)', '95% Probability (+/- 2 Std Dev\'s)'],
+    data: dict = {'Probability': ['68% Probability (\u00B1 1 Std Dev)', '95% Probability (\u00B1 2 Std Dev\'s)'],
                   'Lowest Annual Return': [selected_portfolio['Return']-selected_portfolio['Std Dev'], selected_portfolio['Return']-selected_portfolio['Std Dev']*2],
                   'Highest Annual Return': [selected_portfolio['Return']+selected_portfolio['Std Dev'], selected_portfolio['Return']+selected_portfolio['Std Dev']*2],
                   }
