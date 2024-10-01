@@ -113,11 +113,11 @@ def sidebar():
             )
         elif opt == options[2]:
             st.session_state.tickers_and_constraints = pd.read_excel(
-                "./data/extended_asset_classes_plus_sectors_constrained.xlsx"
+                "./data/basic_asset_classes_plus_sectors_constrained.xlsx"
             )
         elif opt == options[3]:
             st.session_state.tickers_and_constraints = pd.read_excel(
-                "./data/extended_asset_classes_plus-sectors_unconstrained.xlsx"
+                "./data/basic_asset_classes_plus_sectors_unconstrained.xlsx"
             )
         elif opt == options[4]:
             f = st.file_uploader("Select Excel File")
