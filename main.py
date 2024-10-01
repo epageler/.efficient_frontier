@@ -96,10 +96,10 @@ def sidebar():
         st.markdown(
             "#### Step 1: Select Pre-Configured Scenario or Select Custom Excel File")
         old_tickers_and_constraints = st.session_state.tickers_and_constraints
-        options: list[str] = ["Basic Asset Classes, Constrained",
-                              "Basic Asset Classes, Unonstrained",
-                              "Extended Asset Classes plus Sectors, Constrained",
-                              "Extended Asset Classes plus Sectors, Unconstrained",
+        options: list[str] = ["Asset Classes, Constrained",
+                              "Asset Classes, Unonstrained",
+                              "Asset Classes plus Sectors, Constrained",
+                              "Asset Classes plus Sectors, Unconstrained",
                               "Custom"]
         opt = st.selectbox("Select Scenario", options, index=None,
                            help='Select from list of pre-configured scenario. Or, choose \"Custom\" & drag & drop Excel file from your computer.')
