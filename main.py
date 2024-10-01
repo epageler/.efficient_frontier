@@ -98,10 +98,8 @@ def sidebar():
         old_tickers_and_constraints = st.session_state.tickers_and_constraints
         options: list[str] = ["Basic Asset Classes, Constrained",
                               "Basic Asset Classes, Unonstrained",
-                              "Extended Asset Classes, Constrained",
-                              "Extended Asset Classes, Unconstrained",
-                              "Sector SPDR ETFs, Constrained",
-                              "Sector SPDR ETFs, Unconstrained",
+                              "Extended Asset Classes plus Sectors, Constrained",
+                              "Extended Asset Classes plus Sectors, Unconstrained",
                               "Custom"]
         opt = st.selectbox("Select Scenario", options, index=None,
                            help='Select from list of pre-configured scenario. Or, choose \"Custom\" & drag & drop Excel file from your computer.')
@@ -115,21 +113,13 @@ def sidebar():
             )
         elif opt == options[2]:
             st.session_state.tickers_and_constraints = pd.read_excel(
-                "./data/extended_asset_classes_constrained.xlsx"
+                "./data/extended_asset_classes_plus_sectors_constrained.xlsx"
             )
         elif opt == options[3]:
             st.session_state.tickers_and_constraints = pd.read_excel(
-                "./data/extended_asset_classes_unconstrained.xlsx"
+                "./data/extended_asset_classes_plus-sectors_unconstrained.xlsx"
             )
         elif opt == options[4]:
-            st.session_state.tickers_and_constraints = pd.read_excel(
-                "./data/industry_sectors_constrained.xlsx"
-            )
-        elif opt == options[5]:
-            st.session_state.tickers_and_constraints = pd.read_excel(
-                "./data/industry_sectors_unconstrained.xlsx"
-            )
-        elif opt == options[6]:
             f = st.file_uploader("Select Excel File")
             if f:
                 st.session_state.tickers_and_constraints = pd.read_excel(f)
