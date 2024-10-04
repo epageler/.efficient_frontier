@@ -101,6 +101,7 @@ def sidebar():
                               "Asset Classes plus Sectors, Constrained",
                               "Asset Classes plus Sectors, Unconstrained",
                               "Custom"]
+        # Display scenario options
         opt = st.selectbox("Select Scenario", options, index=None,
                            help='Select from list of pre-configured scenario. Or, choose \"Custom\" & drag & drop Excel file from your computer.')
         if opt == options[0]:
