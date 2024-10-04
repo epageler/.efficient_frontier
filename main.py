@@ -97,7 +97,7 @@ def sidebar():
             "#### Step 1: Select Pre-Configured Scenario or Select Custom Excel File")
         old_tickers_and_constraints = st.session_state.tickers_and_constraints
         options: list[str] = ["Asset Classes, Constrained",
-                              "Asset Classes, Unonstrained",
+                              "Asset Classes, Unconstrained",
                               "Asset Classes plus Sectors, Constrained",
                               "Asset Classes plus Sectors, Unconstrained",
                               "Custom"]
