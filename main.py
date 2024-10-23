@@ -188,8 +188,7 @@ def sidebar():
                             "Invalid! Start Date must be less than End Date.")
                         reset_start_end_and_rf_rate()
                     elif start_date < max_inception_date:
-                        st.error(f"Invalid! Start Date cannot be precede latest inception date of {
-                                 max_inception_date}.")
+                        st.error(f"Invalid! Start Date cannot be precede latest inception date of {max_inception_date}.")
                         reset_start_end_and_rf_rate()
                     elif min_weight < 0:
                         st.error(
@@ -285,18 +284,11 @@ def display_configuration() -> None:
         if st.session_state.start_date != None:
             col1, col2, col3 = st.columns(3)
             with col1:
-                st.markdown(f"###### History Start Date: {
-                            st.session_state.start_date.strftime('%Y-%m-%d')}")
+                st.markdown(f"###### History Start Date: {st.session_state.start_date.strftime('%Y-%m-%d')}")
             with col2:
-                st.markdown(f"###### History End Date: {
-                            st.session_state.end_date.strftime("%Y-%m-%d")}")
+                st.markdown(f"###### History End Date: {st.session_state.end_date.strftime("%Y-%m-%d")}")
             with col3:
-                st.markdown(  # The above code is using f-string formatting in Python to display the
-                    # value of `st.session_state.rf_rate` with two decimal places followed by
-                    # a percentage sign. The text "Risk-Free Rate: " is also included in the
-                    # output.
-
-                    f"###### Risk-Free Rate: {st.session_state.rf_rate:.2f}%")
+                st.markdown(f"###### Risk-Free Rate: {st.session_state.rf_rate:.2f}%")
 
 
 def display_growth_of_10000_table(tickers_and_constraints: pd.DataFrame, growth_of_10000: pd.DataFrame) -> None:
@@ -424,8 +416,7 @@ def display_correlation_matrix(cm: pd.DataFrame, names_and_inceptions: pd.DataFr
         for y_index, y_name in enumerate(cm.index):
             hover_text.append(list())
             for x_index, x_name in enumerate(cm.index):
-                hover_text[-1].append(f"{names_and_inceptions.loc[x_name, 'Name']} ({x_name})<br>vs {
-                                      names_and_inceptions.loc[y_name, 'Name']} ({y_name})<br>Correlation: {cm.loc[x_name, y_name]:.2f}")
+                hover_text[-1].append(f"{names_and_inceptions.loc[x_name, 'Name']} ({x_name})<br>vs {names_and_inceptions.loc[y_name, 'Name']} ({y_name})<br>Correlation: {cm.loc[x_name, y_name]:.2f}")
 
         cm = cm.round(decimals=2)
         fig = go.Figure(
@@ -611,8 +602,7 @@ def display_efficient_frontier(ef: pd.DataFrame):
         st.plotly_chart(fig, use_container_width=True)
 
     st.markdown('##### Statistics of Selected Portfolio:')
-    st.text(f"Annual Return: {selected_portfolio['Return']:.2%}   Std Dev: {
-            selected_portfolio['Std Dev']:.2%}   Sharpe Ratio: {selected_portfolio['Sharpe']:.2f}")
+    st.text(f"Annual Return: {selected_portfolio['Return']:.2%}   Std Dev: {selected_portfolio['Std Dev']:.2%}   Sharpe Ratio: {selected_portfolio['Sharpe']:.2f}")
 
     # Display Selected Portfolio (+/-) 1 & 2 Std Dev's
     data: dict = {'Probability': ['68% Probability (\u00B1 1 Std Dev)', '95% Probability (\u00B1 2 Std Dev\'s)'],
@@ -653,8 +643,7 @@ def display_current_vs_selected_portfolio(tickers_and_constraints: pd.DataFrame,
     # Check if sum of current investment weights are less than 100%
     s = curr_weights.sum()
     if s < 1:
-        st.error(f"Note! The sum of the current weights in your portfolio is {
-                 s:.2%}, which is less than 100.00%.")
+        st.error(f"Note! The sum of the current weights in your portfolio is {s:.2%}, which is less than 100.00%.")
 
     with st.expander('Compare Current Portfolio to Selected Portfolio (Click to Hide/Show)', expanded=True):
         st.markdown(f"### Compare Current Portfolio to Selected Portfolio")
