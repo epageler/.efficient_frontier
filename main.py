@@ -17,7 +17,7 @@ def init_session_state() -> None:
     st.session_state.names_and_inceptions = pd.DataFrame()
     st.session_state.start_date = None
     st.session_state.end_date = None
-    st.session_state.curr_rf_rate = yf_api.get_previous_close('^TNX')/100
+    st.session_state.curr_rf_rate = yf_api.get_previous_close("^TNX") / 100
     st.session_state.rf_rate = None
     st.session_state.adj_daily_close = pd.DataFrame()
     st.session_state.growth_of_10000 = pd.DataFrame()
@@ -41,30 +41,51 @@ def overview() -> None:
         "##### This app determines the Efficient Frontier for a specified list of investments."
     )
     st.markdown(
-        "The objective is to determine the optimum diversification of an investment portfolio. The optimum portfolio is defined as one that maximizes return for a given level of risk, as measured by Standard Deviation. (For more information on the efficient frontier, open the Addional Resources section below.)")
-    st.markdown("It also allows you to compare the current diversification of your portfolio to a selected portfolio on the Efficient Frontier.")
-    st.markdown('Disclaimer: The author of this app believes that the data & calculations are correct. However, before making any investment decisions, you should do your own research and/or consult with your investment advisor. The author assumes no responsibility for any investment decisions that you make.')
+        "The objective is to determine the optimum diversification of an investment portfolio. The optimum portfolio is defined as one that maximizes return for a given level of risk, as measured by Standard Deviation. (For more information on the efficient frontier, open the Addional Resources section below.)"
+    )
+    st.markdown(
+        "It also allows you to compare the current diversification of your portfolio to a selected portfolio on the Efficient Frontier."
+    )
+    st.markdown(
+        "Disclaimer: The author of this app believes that the data & calculations are correct. However, before making any investment decisions, you should do your own research and/or consult with your investment advisor. The author assumes no responsibility for any investment decisions that you make."
+    )
 
     st.markdown("### Instructions:")
-    with st.expander("Instructions to Use Application. (Click to Hide/Show)", expanded=True):
+    with st.expander(
+        "Instructions to Use Application. (Click to Hide/Show)", expanded=True
+    ):
         st.markdown(
-            "To get started, follow the Steps listed in the sidebar on the left.")
-        st.markdown("If you want to determine the Efficient Frontier for your own list of investments, select \"Custom\" scenario and drag & drop an Excel file from your computer.")
+            "To get started, follow the Steps listed in the sidebar on the left."
+        )
         st.markdown(
-            "The Excel file must have the following format: (Be sure to spell the column headings exactly as shown.)")
+            'If you want to determine the Efficient Frontier for your own list of investments, select "Custom" scenario and drag & drop an Excel file from your computer.'
+        )
+        st.markdown(
+            "The Excel file must have the following format: (Be sure to spell the column headings exactly as shown.)"
+        )
         st.image("./data/custom_excel_format.png")
         st.markdown(
-            "If you would like to compare your current portfolio to the Efficient Frontier, enter the current investment weights of your portfolio in the \"Curr Weight\" column.")
+            'If you would like to compare your current portfolio to the Efficient Frontier, enter the current investment weights of your portfolio in the "Curr Weight" column.'
+        )
 
     st.markdown("### Additional Resources:")
-    with st.expander("Additional Resources on Efficient Frontier (Click to Show/Hide)", expanded=False):
+    with st.expander(
+        "Additional Resources on Efficient Frontier (Click to Show/Hide)",
+        expanded=False,
+    ):
         st.markdown("##### Some useful resources:")
         st.markdown(
-            "1. Article: Efficient Frontier: What It Is and How Investors Use It by Akhilesh Ganti  \nlink: www.investopedia.com/terms/e/efficientfrontier.asp")
-        st.markdown("2. Article: Markowitz Efficient Set: Meaning, Implementation, Diversification by Will Kenton  \nlink: www.investopedia.com/terms/m/markowitzefficientset.asp")
-        st.markdown("3. Video: Efficient Frontier and Portfolio Optimization Explained | The Ultimate Guide by Ryan O'Connell, CFA, FRM  \n link: www.youtube.com/watch?v=pwyR9uAM0iU&list=PLPe-_ytPHqygIlNok8a3pm1xwHXwVsYmv&index=1&t=44s")
+            "1. Article: Efficient Frontier: What It Is and How Investors Use It by Akhilesh Ganti  \nlink: www.investopedia.com/terms/e/efficientfrontier.asp"
+        )
         st.markdown(
-            "4. Video: Portfolio Optimization in Excel: Step by Step Tutorial by Ryan O'Connell, CFA, FRM  \nlink: www.youtube.com/watch?v=XQS17YrZvEs&list=LL&index=2")
+            "2. Article: Markowitz Efficient Set: Meaning, Implementation, Diversification by Will Kenton  \nlink: www.investopedia.com/terms/m/markowitzefficientset.asp"
+        )
+        st.markdown(
+            "3. Video: Efficient Frontier and Portfolio Optimization Explained | The Ultimate Guide by Ryan O'Connell, CFA, FRM  \n link: www.youtube.com/watch?v=pwyR9uAM0iU&list=PLPe-_ytPHqygIlNok8a3pm1xwHXwVsYmv&index=1&t=44s"
+        )
+        st.markdown(
+            "4. Video: Portfolio Optimization in Excel: Step by Step Tutorial by Ryan O'Connell, CFA, FRM  \nlink: www.youtube.com/watch?v=XQS17YrZvEs&list=LL&index=2"
+        )
 
 
 def sidebar():
@@ -94,16 +115,23 @@ def sidebar():
     with st.sidebar:
         st.markdown("# Configure Analysis:")
         st.markdown(
-            "#### Step 1: Select Pre-Configured Scenario or Select Custom Excel File")
+            "#### Step 1: Select Pre-Configured Scenario or Select Custom Excel File"
+        )
         old_tickers_and_constraints = st.session_state.tickers_and_constraints
-        options: list[str] = ["Asset Classes, Constrained",
-                              "Asset Classes, Unconstrained",
-                              "Asset Classes plus Sectors, Constrained",
-                              "Asset Classes plus Sectors, Unconstrained",
-                              "Custom"]
+        options: list[str] = [
+            "Asset Classes, Constrained",
+            "Asset Classes, Unconstrained",
+            "Asset Classes plus Sectors, Constrained",
+            "Asset Classes plus Sectors, Unconstrained",
+            "Custom",
+        ]
         # Display scenario options
-        opt = st.selectbox("Select Scenario", options, index=None,
-                           help='Select from list of pre-configured scenario. Or, choose \"Custom\" & drag & drop Excel file from your computer.')
+        opt = st.selectbox(
+            "Select Scenario",
+            options,
+            index=None,
+            help='Select from list of pre-configured scenario. Or, choose "Custom" & drag & drop Excel file from your computer.',
+        )
         if opt == options[0]:
             st.session_state.tickers_and_constraints = pd.read_excel(
                 "./data/0_basic_asset_classes_constrained.xlsx"
@@ -126,15 +154,16 @@ def sidebar():
                 st.session_state.tickers_and_constraints = pd.read_excel(f)
         else:
             reset_all()
-        if not st.session_state.tickers_and_constraints.equals(old_tickers_and_constraints):
+        if not st.session_state.tickers_and_constraints.equals(
+            old_tickers_and_constraints
+        ):
             reset_start_end_and_rf_rate()
 
         # Once Excel File has been selected
         if not st.session_state.tickers_and_constraints.equals(pd.DataFrame()):
             # Check if all tickers are valid
             err, names_and_inceptions = yf_api.get_names_and_inceptions(
-                tickers=st.session_state.tickers_and_constraints["Ticker"].tolist(
-                )
+                tickers=st.session_state.tickers_and_constraints["Ticker"].tolist()
             )
             if err != "":
                 st.error(f"Error! {err}")
@@ -142,17 +171,21 @@ def sidebar():
             else:
                 st.session_state.names_and_inceptions = names_and_inceptions
                 st.markdown(
-                    "#### Step 2: Select History Start Date &End Date and Risk Free Rate")
+                    "#### Step 2: Select History Start Date &End Date and Risk Free Rate"
+                )
                 # Find latest inception date
                 df = names_and_inceptions
-                max_inception_date: datetime = df.loc[df.loc[:, 'Inception'].idxmax(
-                ), "Inception"].date()
+                max_inception_date: datetime = df.loc[
+                    df.loc[:, "Inception"].idxmax(), "Inception"
+                ].date()
                 df = st.session_state.tickers_and_constraints
-                min_weight: float = df.loc[df.loc[:,
-                                                  'Min Weight'].idxmin(), 'Min Weight']
-                max_weight: float = df.loc[df.loc[:,
-                                                  'Max Weight'].idxmax(), 'Max Weight']
-                min_less_than_max_weights = df['Min Weight'] <= df['Max Weight']
+                min_weight: float = df.loc[
+                    df.loc[:, "Min Weight"].idxmin(), "Min Weight"
+                ]
+                max_weight: float = df.loc[
+                    df.loc[:, "Max Weight"].idxmax(), "Max Weight"
+                ]
+                min_less_than_max_weights = df["Min Weight"] <= df["Max Weight"]
                 sum_of_max_weights: float = df["Max Weight"].sum()
                 sum_of_curr_weights: float = df["Curr Weight"].sum()
                 with st.form("config_dates_rf_rate"):
@@ -164,7 +197,7 @@ def sidebar():
                         # for testing youtube
                         # value=datetime(year=2007, month=5, day=29),
                         min_value=max_inception_date,
-                        help='Defaults to latest Inception Date of selected investments.'
+                        help="Defaults to latest Inception Date of selected investments.",
                     )
                     end_date = st.date_input(
                         "Select End Date (MM-DD-YYYY)",
@@ -172,43 +205,51 @@ def sidebar():
                         value=datetime.today() - timedelta(1),
                         # for testing youtube
                         # value=datetime(year=2023, month=5, day=20),
-                        help='Defaults to yesterday'
+                        help="Defaults to yesterday",
                     )
                     # rf_rate = st.number_input("Specify Risk-Free Rate", min_value=0.00)
                     rf_rate = st.number_input(
-                        "Specify Risk-Free Rate", min_value=0.00, value=st.session_state.curr_rf_rate*100,
-                        help='Defaults to current yield on 10-year Treasury bond.'
+                        "Specify Risk-Free Rate",
+                        min_value=0.00,
+                        value=st.session_state.curr_rf_rate * 100,
+                        help="Defaults to current yield on 10-year Treasury bond.",
                     )
                     calc_ef_button = st.form_submit_button(
                         "Calculate Efficient Frontier"
                     )
                 if calc_ef_button:
                     if end_date < start_date:
-                        st.error(
-                            "Invalid! Start Date must be less than End Date.")
+                        st.error("Invalid! Start Date must be less than End Date.")
                         reset_start_end_and_rf_rate()
                     elif start_date < max_inception_date:
-                        st.error(f"Invalid! Start Date cannot be precede latest inception date of {max_inception_date}.")
+                        st.error(
+                            f"Invalid! Start Date cannot be precede latest inception date of {max_inception_date}."
+                        )
                         reset_start_end_and_rf_rate()
                     elif min_weight < 0:
                         st.error(
-                            f"Invalid! Minimum investment weights must be greater than or equal to 0%.")
+                            f"Invalid! Minimum investment weights must be greater than or equal to 0%."
+                        )
                         reset_start_end_and_rf_rate()
                     elif max_weight > 1.0:
                         st.error(
-                            f"Invalid! Maximum investment weights must be less than or equal to 100%.")
+                            f"Invalid! Maximum investment weights must be less than or equal to 100%."
+                        )
                         reset_start_end_and_rf_rate()
                     elif not min_less_than_max_weights.all():
                         st.error(
-                            f"Invalid! Minimum Investment weights must be less than or equal to Maximum Investment Weights.")
+                            f"Invalid! Minimum Investment weights must be less than or equal to Maximum Investment Weights."
+                        )
                         reset_start_end_and_rf_rate()
                     elif sum_of_max_weights < 1:
                         st.error(
-                            'Invalid! Sum of Maximum Weights of investments must be greater than or equal to 100%')
+                            "Invalid! Sum of Maximum Weights of investments must be greater than or equal to 100%"
+                        )
                         reset_start_end_and_rf_rate()
                     elif sum_of_curr_weights > 1.00:
                         st.error(
-                            'Invalid! Sum of Current Weights of investments must be less than or equal to 100%')
+                            "Invalid! Sum of Current Weights of investments must be less than or equal to 100%"
+                        )
                         reset_start_end_and_rf_rate()
                     else:
                         st.session_state.start_date = start_date
@@ -238,16 +279,22 @@ def calc_port_stats(inv_and_constraints, risk_free_rate, adj_daily_close):
         adj_daily_close,
     )
     efficient_frontier.rename(columns={"Risk": "Std Dev"}, inplace=True)
-    if not (inv_and_constraints['Curr Weight'] == 0).all():
+    if not (inv_and_constraints["Curr Weight"] == 0).all():
         current_portfolio_return = ps.get_portfolio_return(
-            inv_and_constraints['Curr Weight'],
-            expected_returns)
+            inv_and_constraints["Curr Weight"], expected_returns
+        )
         current_portfolio_sd: float = ps.get_portfolio_sd(
-            inv_and_constraints['Curr Weight'], cov_matrix)
+            inv_and_constraints["Curr Weight"], cov_matrix
+        )
         current_portfolio_sharpe: float = (
-            current_portfolio_return-st.session_state.rf_rate/100)/current_portfolio_sd
+            current_portfolio_return - st.session_state.rf_rate / 100
+        ) / current_portfolio_sd
     else:
-        current_portfolio_return, current_portfolio_sd, current_portfolio_sharpe = None, None, None
+        current_portfolio_return, current_portfolio_sd, current_portfolio_sharpe = (
+            None,
+            None,
+            None,
+        )
     return (
         growth_of_10000,
         expected_returns,
@@ -257,12 +304,15 @@ def calc_port_stats(inv_and_constraints, risk_free_rate, adj_daily_close):
         efficient_frontier,
         current_portfolio_return,
         current_portfolio_sd,
-        current_portfolio_sharpe
+        current_portfolio_sharpe,
     )
 
 
 def display_configuration() -> None:
-    with st.expander("Analysis Configuration (Click to Hide / Show)", expanded=True,):
+    with st.expander(
+        "Analysis Configuration (Click to Hide / Show)",
+        expanded=True,
+    ):
         if not st.session_state.names_and_inceptions.equals(pd.DataFrame()):
             st.markdown("### Analysis Configuration:")
             st.markdown("###### Investments & Constraints:")
@@ -270,8 +320,16 @@ def display_configuration() -> None:
             df2["Inception"] = df2["Inception"].dt.strftime("%Y-%m-%d")
             df2["Ticker"] = df2.index
             df = pd.merge(st.session_state.tickers_and_constraints, df2)
-            df = df[["Ticker", "Name", "Min Weight",
-                     "Max Weight", "Curr Weight", "Inception"]]
+            df = df[
+                [
+                    "Ticker",
+                    "Name",
+                    "Min Weight",
+                    "Max Weight",
+                    "Curr Weight",
+                    "Inception",
+                ]
+            ]
             st.dataframe(
                 df.style.format(
                     {
@@ -284,16 +342,22 @@ def display_configuration() -> None:
         if st.session_state.start_date != None:
             col1, col2, col3 = st.columns(3)
             with col1:
-                st.markdown(f"###### History Start Date: {st.session_state.start_date.strftime('%Y-%m-%d')}")
+                st.markdown(
+                    f"###### History Start Date: {st.session_state.start_date.strftime('%Y-%m-%d')}"
+                )
             with col2:
-                st.markdown(f"###### History End Date: {st.session_state.end_date.strftime("%Y-%m-%d")}")
+                st.markdown(
+                    f"###### History End Date: {st.session_state.end_date.strftime("%Y-%m-%d")}"
+                )
             with col3:
                 st.markdown(f"###### Risk-Free Rate: {st.session_state.rf_rate:.2f}%")
 
 
-def display_growth_of_10000_table(tickers_and_constraints: pd.DataFrame, growth_of_10000: pd.DataFrame) -> None:
+def display_growth_of_10000_table(
+    tickers_and_constraints: pd.DataFrame, growth_of_10000: pd.DataFrame
+) -> None:
     df = growth_of_10000
-    df.index = pd.to_datetime(df.index).strftime('%Y-%m-%d')
+    df.index = pd.to_datetime(df.index).strftime("%Y-%m-%d")
     with st.expander("Growth of $10,000 Table (Click to Hide / Show)", expanded=True):
         st.markdown("### Growth of $10,000:")
         tickers: list[str] = tickers_and_constraints["Ticker"]
@@ -303,29 +367,32 @@ def display_growth_of_10000_table(tickers_and_constraints: pd.DataFrame, growth_
         format_dict: dict[str, str] = {}
         for c in columns:
             format_dict[c] = "${:,.2f}"
-        st.dataframe(
-            df.iloc[[-1]].style.format(formatter=format_dict))
+        st.dataframe(df.iloc[[-1]].style.format(formatter=format_dict))
 
 
-def display_growth_of_10000_graph(tickers_and_constraints: pd.DataFrame, growth_of_10000: pd.DataFrame) -> None:
-    with st.expander("Growth of $10,000 Graph (Click to Hide / Show)", expanded=True):
+def display_growth_of_10000_graph(
+    tickers_and_constraints: pd.DataFrame, growth_of_10000: pd.DataFrame
+) -> None:
+    with st.expander(
+        "Growth of $10,000 Investments (Click to Hide / Show)", expanded=True
+    ):
         # Display Graph
-        customdata_set: list = list(
-            tickers_and_constraints[['Ticker']].to_numpy())
+        customdata_set: list = list(tickers_and_constraints[["Ticker"]].to_numpy())
         columns = growth_of_10000.columns
         fig = px.line(
             growth_of_10000,
             x=growth_of_10000.index,  # date column
-            y=growth_of_10000.columns[0: len(
-                growth_of_10000.columns)],   # Value on date
-            title="Growth of $10,000:",
+            y=growth_of_10000.columns[
+                0 : len(growth_of_10000.columns)
+            ],  # Value on date
+            title="Growth of $10,000 Investments:",
         )
         fig.update_traces(
             customdata=customdata_set,
             hovertemplate="Date: %{x}<br>Value: $%{y:,.0f}",
         )
         fig.update_layout(
-            title="Growth of $10,000",
+            title="Growth of $10,000 Investments",
             title_font_size=24,
             # title_x=0.5,
             legend_title="Investment",
@@ -338,22 +405,22 @@ def display_growth_of_10000_graph(tickers_and_constraints: pd.DataFrame, growth_
 
         # Display ending value of $10,000 investment
         df = growth_of_10000
-        columns = df .columns
+        columns = df.columns
         format_dict: dict[str, str] = {}
         for c in columns:
             format_dict[c] = "${:,.2f}"
         # Convert Timestamp index to string
         df.index = df.index.astype(str)
-        st.markdown('Ending value of $10,000 Investment:')
-        st.dataframe(
-            df.iloc[[-1]].style.format(formatter=format_dict))
+        st.markdown("Ending value of $10,000 Investment:")
+        st.dataframe(df.iloc[[-1]].style.format(formatter=format_dict))
 
 
 def display_return_and_sd_table_and_graph(
     names_and_inceptions, expected_returns, std_deviations
 ) -> None:
     with st.expander(
-        "Annual Return, Standard Deviation, & Sharpe Ratio for Each Investment (Click to Hide / Show)", expanded=True
+        "Annual Return, Standard Deviation, & Sharpe Ratio for Each Investment (Click to Hide / Show)",
+        expanded=True,
     ):
         df = pd.DataFrame(
             {
@@ -362,17 +429,19 @@ def display_return_and_sd_table_and_graph(
                 "Std Dev": std_deviations,
             }
         )
-        df['Sharpe'] = (
-            df['Return']-st.session_state.rf_rate/100)/df['Std Dev']
+        df["Sharpe"] = (df["Return"] - st.session_state.rf_rate / 100) / df["Std Dev"]
         df = df.reset_index()
         df = df.rename(columns={"index": "Ticker"})
         col1, col2 = st.columns([6, 6])
         with col1:
             st.markdown("### Annual Return, Standard Deviation, & Sharpe:")
-            st.dataframe(df.style.format(
-                {"Return": "{:.2%}", "Std Dev": "{:.2%}", "Sharpe": "{:.2f}"}))
+            st.dataframe(
+                df.style.format(
+                    {"Return": "{:.2%}", "Std Dev": "{:.2%}", "Sharpe": "{:.2f}"}
+                )
+            )
         with col2:
-            customdata_set = list(df[['Investment']].to_numpy())
+            customdata_set = list(df[["Investment"]].to_numpy())
             fig = go.Figure(
                 go.Scatter(
                     x=df["Std Dev"],
@@ -387,8 +456,9 @@ def display_return_and_sd_table_and_graph(
             fig.update_traces(
                 textposition="middle right",
                 marker=dict(size=7, color="red"),
-                hovertemplate='<b>%{customdata[0]}</b><br>' + 'Return: %{y}<br>' +
-                'Std Dev: %{x}',
+                hovertemplate="<b>%{customdata[0]}</b><br>"
+                + "Return: %{y}<br>"
+                + "Std Dev: %{x}",
             )
             fig.update_xaxes(showgrid=True)
             fig.update_yaxes(showgrid=True)
@@ -407,7 +477,9 @@ def display_return_and_sd_table_and_graph(
             st.plotly_chart(fig)
 
 
-def display_correlation_matrix(cm: pd.DataFrame, names_and_inceptions: pd.DataFrame) -> None:
+def display_correlation_matrix(
+    cm: pd.DataFrame, names_and_inceptions: pd.DataFrame
+) -> None:
     with st.expander(
         "Investment Correlation Matrix (Click to Hide / Show)", expanded=True
     ):
@@ -416,7 +488,9 @@ def display_correlation_matrix(cm: pd.DataFrame, names_and_inceptions: pd.DataFr
         for y_index, y_name in enumerate(cm.index):
             hover_text.append(list())
             for x_index, x_name in enumerate(cm.index):
-                hover_text[-1].append(f"{names_and_inceptions.loc[x_name, 'Name']} ({x_name})<br>vs {names_and_inceptions.loc[y_name, 'Name']} ({y_name})<br>Correlation: {cm.loc[x_name, y_name]:.2f}")
+                hover_text[-1].append(
+                    f"{names_and_inceptions.loc[x_name, 'Name']} ({x_name})<br>vs {names_and_inceptions.loc[y_name, 'Name']} ({y_name})<br>Correlation: {cm.loc[x_name, y_name]:.2f}"
+                )
 
         cm = cm.round(decimals=2)
         fig = go.Figure(
@@ -428,8 +502,8 @@ def display_correlation_matrix(cm: pd.DataFrame, names_and_inceptions: pd.DataFr
                 texttemplate="%{z}",
                 zmin=-1,
                 zmax=1,
-                hoverinfo='text',
-                text=hover_text
+                hoverinfo="text",
+                text=hover_text,
             )
         )
 
@@ -443,8 +517,8 @@ def display_correlation_matrix(cm: pd.DataFrame, names_and_inceptions: pd.DataFr
             width=900,
             height=900,
             font=dict(size=18),
-            hoverlabel_align='right',
-            hoverlabel=dict(font=dict(size=16))
+            hoverlabel_align="right",
+            hoverlabel=dict(font=dict(size=16)),
         )
         st.plotly_chart(fig)
 
@@ -453,15 +527,15 @@ def display_efficient_frontier(ef: pd.DataFrame):
     st.markdown("### Select Point on Efficient Frontier (by using the buttons below):")
 
     if st.session_state.selected_port == None:
-        st.session_state.selected_port = ef['Sharpe'].idxmax()
+        st.session_state.selected_port = ef["Sharpe"].idxmax()
 
     def set_portfolio(abs_value, inc_value):
         if abs_value == None:
             st.session_state.selected_port += inc_value
             if st.session_state.selected_port < 0:
                 st.session_state.selected_port = 0
-            if st.session_state.selected_port > (len(ef)-1):
-                st.session_state.selected_port = len(ef)-1
+            if st.session_state.selected_port > (len(ef) - 1):
+                st.session_state.selected_port = len(ef) - 1
         else:
             st.session_state.selected_port = abs_value
 
@@ -495,7 +569,7 @@ def display_efficient_frontier(ef: pd.DataFrame):
         st.button(
             "Max Risk & Return",
             on_click=set_portfolio,
-            args=(len(ef.index)-1, None),
+            args=(len(ef.index) - 1, None),
             type="primary",
         )
 
@@ -510,21 +584,21 @@ def display_efficient_frontier(ef: pd.DataFrame):
                 y=ef["Return"],
                 name="Efficient Frontier",
                 mode="lines+markers",
-                customdata=ef[['Std Dev', 'Return', 'Sharpe']],
-                hovertemplate='Return: %{customdata[1]:.2%}<br>' +
-                'Std Dev: %{customdata[0]:.2%}<br>' +
-                'Sharpe: %{customdata[2]:.2f}',
+                customdata=ef[["Std Dev", "Return", "Sharpe"]],
+                hovertemplate="Return: %{customdata[1]:.2%}<br>"
+                + "Std Dev: %{customdata[0]:.2%}<br>"
+                + "Sharpe: %{customdata[2]:.2f}",
             )
         )
         fig.add_trace(
             go.Scatter(
-                x=[ef.iloc[ef['Sharpe'].idxmax()]['Std Dev']],
-                y=[ef.iloc[ef['Sharpe'].idxmax()]['Return']],
+                x=[ef.iloc[ef["Sharpe"].idxmax()]["Std Dev"]],
+                y=[ef.iloc[ef["Sharpe"].idxmax()]["Return"]],
                 name="Max Sharpe Ratio",
-                customdata=[ef.iloc[ef['Sharpe'].idxmax()]['Sharpe']],
-                hovertemplate='Return: %{y:.2%}<br>' +
-                'Std Dev: %{x:.2%}<br>' +
-                'Sharpe: %{customdata:.2f}',
+                customdata=[ef.iloc[ef["Sharpe"].idxmax()]["Sharpe"]],
+                hovertemplate="Return: %{y:.2%}<br>"
+                + "Std Dev: %{x:.2%}<br>"
+                + "Sharpe: %{customdata:.2f}",
                 marker=dict(color="red", size=10),
                 mode="markers",
             )
@@ -534,10 +608,10 @@ def display_efficient_frontier(ef: pd.DataFrame):
                 x=[selected_portfolio["Std Dev"]],
                 y=[selected_portfolio["Return"]],
                 name="Selected Portfolio",
-                customdata=selected_portfolio[['Sharpe']],
-                hovertemplate='Return: %{y:.2%}<br>' +
-                'Std Dev: %{x:.2%}<br>' +
-                'Sharpe: %{customdata:.2f}',
+                customdata=selected_portfolio[["Sharpe"]],
+                hovertemplate="Return: %{y:.2%}<br>"
+                + "Std Dev: %{x:.2%}<br>"
+                + "Sharpe: %{customdata:.2f}",
                 marker=dict(
                     size=25,
                     symbol="diamond",
@@ -552,15 +626,15 @@ def display_efficient_frontier(ef: pd.DataFrame):
                 y=[st.session_state.current_portfolio_return],
                 name="Current Portfolio",
                 customdata=[st.session_state.current_portfolio_sharpe],
-                hovertemplate='Return: %{y:.2%}<br>' +
-                'Std Dev: %{x:.2%}<br>' +
-                'Sharpe: %{customdata:.2f}',
-                marker=dict(color="green", size=10),)
+                hovertemplate="Return: %{y:.2%}<br>"
+                + "Std Dev: %{x:.2%}<br>"
+                + "Sharpe: %{customdata:.2f}",
+                marker=dict(color="green", size=10),
+            )
         )
         fig.update_xaxes(rangemode="tozero")
         fig.update_yaxes(rangemode="tozero")
-        fig.update_layout(height=500, width=500,
-                          title=dict(text=""))
+        fig.update_layout(height=500, width=500, title=dict(text=""))
         fig.update_layout(
             xaxis_title="Annual Standard Deviation (Risk)",
             yaxis_title="Annual Return",
@@ -576,43 +650,65 @@ def display_efficient_frontier(ef: pd.DataFrame):
         st.markdown(f"#### Portfolio Diversification:")
         df = ef.iloc[st.session_state.selected_port]
         selected_port_tickers = df.index.tolist()[3:]
-        selected_port_diversification = df.iloc[3:len(df)]
-        customdata_set = st.session_state.names_and_inceptions[[
-            'Name']]
+        selected_port_diversification = df.iloc[3 : len(df)]
+        customdata_set = st.session_state.names_and_inceptions[["Name"]]
         values = selected_port_diversification.tolist()
         labels = selected_port_tickers
-        fig = go.Figure(data=[go.Pie(
-                        values=values,
-                        labels=labels,
-                        customdata=customdata_set,
-                        name="",
-                        sort=False, direction='clockwise',
-                        showlegend=True,
-                        automargin=False
-                        ),
-        ]
+        fig = go.Figure(
+            data=[
+                go.Pie(
+                    values=values,
+                    labels=labels,
+                    customdata=customdata_set,
+                    name="",
+                    sort=False,
+                    direction="clockwise",
+                    showlegend=True,
+                    automargin=False,
+                ),
+            ]
         )
-        fig.update_traces(textinfo='label+percent', textfont_size=14)
+        fig.update_traces(textinfo="label+percent", textfont_size=14)
         fig.update_traces(
-            hovertemplate='<b>%{customdata[0]}</b><br>'+'%{label}<br>'+'%{percent:.1%}',)
-        fig.update_layout(height=500,
-                          autosize=True,
-                          # title='Portfolio Diversification'
-                          )
+            hovertemplate="<b>%{customdata[0]}</b><br>"
+            + "%{label}<br>"
+            + "%{percent:.1%}",
+        )
+        fig.update_layout(
+            height=500,
+            autosize=True,
+            # title='Portfolio Diversification'
+        )
         st.plotly_chart(fig, use_container_width=True)
 
-    st.markdown('##### Statistics of Selected Portfolio:')
-    st.text(f"Annual Return: {selected_portfolio['Return']:.2%}   Std Dev: {selected_portfolio['Std Dev']:.2%}   Sharpe Ratio: {selected_portfolio['Sharpe']:.2f}")
+    st.markdown("##### Statistics of Selected Portfolio:")
+    st.text(
+        f"Annual Return: {selected_portfolio['Return']:.2%}   Std Dev: {selected_portfolio['Std Dev']:.2%}   Sharpe Ratio: {selected_portfolio['Sharpe']:.2f}"
+    )
 
     # Display Selected Portfolio (+/-) 1 & 2 Std Dev's
-    data: dict = {'Probability': ['68% Probability (\u00B1 1 Std Dev)', '95% Probability (\u00B1 2 Std Dev\'s)'],
-                  'Lowest Annual Return': [selected_portfolio['Return']-selected_portfolio['Std Dev'], selected_portfolio['Return']-selected_portfolio['Std Dev']*2],
-                  'Highest Annual Return': [selected_portfolio['Return']+selected_portfolio['Std Dev'], selected_portfolio['Return']+selected_portfolio['Std Dev']*2],
-                  }
+    data: dict = {
+        "Probability": [
+            "68% Probability (\u00B1 1 Std Dev)",
+            "95% Probability (\u00B1 2 Std Dev's)",
+        ],
+        "Lowest Annual Return": [
+            selected_portfolio["Return"] - selected_portfolio["Std Dev"],
+            selected_portfolio["Return"] - selected_portfolio["Std Dev"] * 2,
+        ],
+        "Highest Annual Return": [
+            selected_portfolio["Return"] + selected_portfolio["Std Dev"],
+            selected_portfolio["Return"] + selected_portfolio["Std Dev"] * 2,
+        ],
+    }
     df: pd.DataFrame = pd.DataFrame(data)
     st.markdown(f"##### Probability of Returns for Selected Portfolio:")
-    st.dataframe(df.style.format(
-        {"Lowest Annual Return": "{:.2%}", "Highest Annual Return": "{:.2%}"}), hide_index=True)
+    st.dataframe(
+        df.style.format(
+            {"Lowest Annual Return": "{:.2%}", "Highest Annual Return": "{:.2%}"}
+        ),
+        hide_index=True,
+    )
 
     with st.expander("Efficient Frontier Table (Click to Hide / Show)", expanded=False):
         format_dict: dict[str, str] = {}
@@ -621,11 +717,13 @@ def display_efficient_frontier(ef: pd.DataFrame):
         st.dataframe(ef.style.format(formatter=format_dict))
 
 
-def display_current_vs_selected_portfolio(tickers_and_constraints: pd.DataFrame,
-                                          curr_port_sd: float,
-                                          curr_port_return: float,
-                                          curr_port_sharpe: float,
-                                          selected_port: pd.DataFrame) -> None:
+def display_current_vs_selected_portfolio(
+    tickers_and_constraints: pd.DataFrame,
+    curr_port_sd: float,
+    curr_port_return: float,
+    curr_port_sharpe: float,
+    selected_port: pd.DataFrame,
+) -> None:
 
     # Check that "Curr Weights" do not violate "Min Weight" / "Max Weight"
     curr_weights = tickers_and_constraints["Curr Weight"]
@@ -634,90 +732,187 @@ def display_current_vs_selected_portfolio(tickers_and_constraints: pd.DataFrame,
     tickers = tickers_and_constraints["Ticker"]
     e = []
     for i in range(len(curr_weights)):
-        if (curr_weights[i] < min_weights[i] or curr_weights[i] > max_weights[i]):
+        if curr_weights[i] < min_weights[i] or curr_weights[i] > max_weights[i]:
             e.append(tickers[i])
     if len(e) != 0:
         st.error(
-            f"Note! The following investments violate your Minimum / Maximum investment weights: {e}")
+            f"Note! The following investments violate your Minimum / Maximum investment weights: {e}"
+        )
 
     # Check if sum of current investment weights are less than 100%
     s = curr_weights.sum()
     if s < 1:
-        st.error(f"Note! The sum of the current weights in your portfolio is {s:.2%}, which is less than 100.00%.")
+        st.error(
+            f"Note! The sum of the current weights in your portfolio is {s:.2%}, which is less than 100.00%."
+        )
 
-    with st.expander('Compare Current Portfolio to Selected Portfolio (Click to Hide/Show)', expanded=True):
+    with st.expander(
+        "Compare Current Portfolio to Selected Portfolio (Click to Hide/Show)",
+        expanded=True,
+    ):
         st.markdown(f"### Compare Current Portfolio to Selected Portfolio")
         col1, col2 = st.columns(2)
         with col1:
             st.markdown(f"##### Current Portfolio:")
-            st.markdown('---')
+            st.markdown("---")
             df = selected_port
             selected_port_tickers = df.index.tolist()[3:]
-            selected_port_diversification = df.iloc[3:len(df)]
-            customdata_set = st.session_state.names_and_inceptions[[
-                'Name']]
+            selected_port_diversification = df.iloc[3 : len(df)]
+            customdata_set = st.session_state.names_and_inceptions[["Name"]]
             values = curr_weights.tolist()
             labels = selected_port_tickers
-            fig = go.Figure(data=[go.Pie(
-                            values=values,
-                            labels=labels,
-                            customdata=customdata_set,
-                            name="",
-                            sort=False, direction='clockwise',
-                            showlegend=True,
-                            automargin=False
-                            ),
-            ]
+            fig = go.Figure(
+                data=[
+                    go.Pie(
+                        values=values,
+                        labels=labels,
+                        customdata=customdata_set,
+                        name="",
+                        sort=False,
+                        direction="clockwise",
+                        showlegend=True,
+                        automargin=False,
+                    ),
+                ]
             )
-            fig.update_traces(textinfo='label+percent', textfont_size=14)
+            fig.update_traces(textinfo="label+percent", textfont_size=14)
             fig.update_traces(
-                hovertemplate='<b>%{customdata[0]}</b><br>'+'%{label}<br>'+'%{percent:.1%}',)
-            fig.update_layout(autosize=True,
-                              height=500,
-                              # title='Selected Portfolio Diversification'
-                              )
+                hovertemplate="<b>%{customdata[0]}</b><br>"
+                + "%{label}<br>"
+                + "%{percent:.1%}",
+            )
+            fig.update_layout(
+                autosize=True,
+                height=500,
+                # title='Selected Portfolio Diversification'
+            )
             st.plotly_chart(fig, use_container_width=True)
         with col2:
             st.markdown(f"##### Selected Portfolio:")
-            st.markdown('---')
+            st.markdown("---")
             df = selected_port
             selected_port_tickers = df.index.tolist()[3:]
-            selected_port_diversification = df.iloc[3:len(df)]
-            customdata_set = st.session_state.names_and_inceptions[[
-                'Name']]
+            selected_port_diversification = df.iloc[3 : len(df)]
+            customdata_set = st.session_state.names_and_inceptions[["Name"]]
             values = selected_port_diversification.tolist()
             labels = selected_port_tickers
-            fig = go.Figure(data=[go.Pie(
-                            values=values,
-                            labels=labels,
-                            customdata=customdata_set,
-                            name="",
-                            sort=False, direction='clockwise',
-                            showlegend=True,
-                            automargin=False
-                            ),
-            ]
+            fig = go.Figure(
+                data=[
+                    go.Pie(
+                        values=values,
+                        labels=labels,
+                        customdata=customdata_set,
+                        name="",
+                        sort=False,
+                        direction="clockwise",
+                        showlegend=True,
+                        automargin=False,
+                    ),
+                ]
             )
-            fig.update_traces(textinfo='label+percent', textfont_size=14)
+            fig.update_traces(textinfo="label+percent", textfont_size=14)
             fig.update_traces(
-                hovertemplate='<b>%{customdata[0]}</b><br>'+'%{label}<br>'+'%{percent:.1%}',)
+                hovertemplate="<b>%{customdata[0]}</b><br>"
+                + "%{label}<br>"
+                + "%{percent:.1%}",
+            )
             fig.update_layout(
                 # title='Selected Portfolio Diversification',
-                height=500, autosize=True)
+                height=500,
+                autosize=True,
+            )
             st.plotly_chart(fig, use_container_width=True)
 
         # Display Stats of Current Portfolio vs Selected Portfolio
-        data = {'Portfolio': ['Current', 'Selected'],
-                'Return': [curr_port_return, selected_port['Return']],
-                'Std Dev': [curr_port_sd, selected_port['Std Dev']],
-                'Sharpe': [curr_port_sharpe, selected_port['Sharpe']]}
+        data = {
+            "Portfolio": ["Current", "Selected"],
+            "Return": [curr_port_return, selected_port["Return"]],
+            "Std Dev": [curr_port_sd, selected_port["Std Dev"]],
+            "Sharpe": [curr_port_sharpe, selected_port["Sharpe"]],
+        }
         df: pd.DataFrame = pd.DataFrame(data)
         co11, col2, col3 = st.columns([4, 4, 4])
         with col2:
             st.markdown(f"##### Current Portfolio vs Selected Portfolio")
-            st.dataframe(df.style.format(
-                {"Return": "{:.2%}", "Std Dev": "{:.2%}", "Sharpe": "{:.2f}"}), hide_index=True)
+            st.dataframe(
+                df.style.format(
+                    {"Return": "{:.2%}", "Std Dev": "{:.2%}", "Sharpe": "{:.2f}"}
+                ),
+                hide_index=True,
+            )
             # st.dataframe(df,hide_index=True)
+
+
+def display_growth_of_10000_portfolios():
+    # Display Growth of Selected vs Current Portfolio
+    with st.expander("Growth of $10,000 Portfolio (Click to Hide/Show)",expanded=True):
+        # Get growth of Selected Portfolio
+        daily_value = pd.DataFrame()
+        daily_value = daily_value.rename(columns=["Date", "Selected", "Current"])
+        daily_value.index = st.session_state.growth_of_10000.index
+        df: pd.DataFrame = ps.get_growth_of_10000_portfolio(
+            st.session_state.adj_daily_close,
+            st.session_state.efficient_frontier.iloc[st.session_state.selected_port, 3:],
+        )
+        daily_value["Selected"] = df["Value"]
+        
+        # Is Curr Portfolio Specfied?
+        if not np.isnan(st.session_state.current_portfolio_return):
+            # If so, get growth of current portfolio
+            df = pd.DataFrame()
+            df["Ticker"] = st.session_state.tickers_and_constraints["Ticker"]
+            df["Curr Weight"] = st.session_state.tickers_and_constraints["Curr Weight"]
+            df = df.set_index("Ticker")
+            # df2 = ps.get_growth_of_10000_portfolio(st.session_state.adj_daily_close, df)
+            # daily_value["Current"]=df2["Value"]
+            daily_value["Current"]=ps.get_growth_of_10000_portfolio(st.session_state.adj_daily_close, df)["Value"]
+                    # daily_value["Current"] = ps.get_growth_of_10000_portfolio(
+            #     st.session_state.adj_daily_close, df
+            # )
+        else:
+            # If not, set value of current portfolio to empty
+            daily_value["Current"] = np.nan
+
+        st.session_state.growth_of_10000_portfolio=daily_value
+
+        # Display Graph
+        columns = daily_value.columns
+        fig = px.line(
+            daily_value,
+            x=daily_value.index,  # date column
+            y=daily_value.columns[
+                0 : len(daily_value.columns)
+            ],  # Value on date
+            title="Growth of $10,000 Portfolio",
+        )
+        fig.update_traces(
+            # customdata=customdata_set,
+            hovertemplate="Date: %{x}<br>Value: $%{y:,.0f}",
+        )
+        fig.update_layout(
+            title="Growth of $10,000 Portfolio (Assumes No Rebalancing):",
+            title_font_size=24,
+            # title_x=0.5,
+            legend_title="Portfolio",
+            autosize=True,
+            height=800,
+            yaxis_tickprefix="$",
+            yaxis_tickformat=",",
+        )
+        fig["data"][0]["line"]["color"]="rgb(255,0,0)"
+        fig["data"][1]["line"]["color"] = "rgb(0,0,255)"
+        st.plotly_chart(fig, use_container_width=True)
+        
+        # Display ending value of $10,000 portfolio
+        df = daily_value
+        columns = df.columns
+        format_dict: dict[str, str] = {}
+        for c in columns:
+            format_dict[c] = "${:,.2f}"
+        # Convert Timestamp index to string
+        df.index = df.index.astype(str)
+        st.markdown("Ending value of $10,000 Portfolio (Assumes No Rebalancing):")
+        st.dataframe(df.iloc[[-1]].style.format(formatter=format_dict))
 
 
 if __name__ == "__main__":
@@ -738,9 +933,10 @@ if __name__ == "__main__":
         st.session_state.adj_daily_close = get_data_from_yf(
             st.session_state.tickers_and_constraints["Ticker"].tolist(),
             st.session_state.start_date,
-            st.session_state.end_date)
+            st.session_state.end_date,
+        )
 
-       # Calculate Portfolio Statistics based on Adjust Daily Closing Prices
+        # Calculate Portfolio Statistics based on Adjust Daily Closing Prices
         (
             st.session_state.growth_of_10000,
             st.session_state.expected_returns,
@@ -750,24 +946,32 @@ if __name__ == "__main__":
             st.session_state.efficient_frontier,
             st.session_state.current_portfolio_return,
             st.session_state.current_portfolio_sd,
-            st.session_state.current_portfolio_sharpe
-        ) = calc_port_stats(st.session_state.tickers_and_constraints,
-                            st.session_state.rf_rate,
-                            st.session_state.adj_daily_close)
+            st.session_state.current_portfolio_sharpe,
+        ) = calc_port_stats(
+            st.session_state.tickers_and_constraints,
+            st.session_state.rf_rate,
+            st.session_state.adj_daily_close,
+        )
 
         display_growth_of_10000_graph(
-            st.session_state.tickers_and_constraints,
-            st.session_state.growth_of_10000)
+            st.session_state.tickers_and_constraints, st.session_state.growth_of_10000
+        )
         # display_growth_of_10000_table(
         #     st.session_state.tickers_and_constraints,
         #     st.session_state.growth_of_10000)
+
         display_return_and_sd_table_and_graph(
             st.session_state.names_and_inceptions,
             st.session_state.expected_returns,
-            st.session_state.std_deviations)
+            st.session_state.std_deviations,
+        )
+
         display_correlation_matrix(
-            st.session_state.correlation_matrix, st.session_state.names_and_inceptions)
+            st.session_state.correlation_matrix, st.session_state.names_and_inceptions
+        )
+
         display_efficient_frontier(st.session_state.efficient_frontier)
+
         if not np.isnan(st.session_state.current_portfolio_return):
             display_current_vs_selected_portfolio(
                 st.session_state.tickers_and_constraints,
@@ -775,9 +979,12 @@ if __name__ == "__main__":
                 st.session_state.current_portfolio_return,
                 st.session_state.current_portfolio_sharpe,
                 st.session_state.efficient_frontier.iloc[
-                    st.session_state.selected_port])
+                    st.session_state.selected_port
+                ],
+            )
 
-        # Inspect Session_State
-        # with st.expander('Inspect session_state (Click to Show/Hide)', expanded=False):
+        display_growth_of_10000_portfolios()
+
+        # with st.expander("Inspect session_state (Click to Show/Hide)", expanded=False):
         #     pass
         #     st.write(st.session_state)

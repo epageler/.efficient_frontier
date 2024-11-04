@@ -118,3 +118,12 @@ def get_portfolio_sd(weights:pd.DataFrame,cov:pd.DataFrame)-> float:
     # Std Dev = sqrt ( (Investment_Weights)*(Covariance_Matrix) * (Inverse of Investment_Weights) *252 )
     sd:float = np.sqrt(np.dot(np.dot(weights, cov), weights.T) * 252)
     return sd
+
+def get_growth_of_10000_portfolio(adj_daily_close:pd.DataFrame,weights: pd.DataFrame)->pd.DataFrame:
+    initial_prices:pd.DataFrame=adj_daily_close.iloc[0]
+    dollars_purchased:pd.DataFrame=weights.multiply(10000)
+    shares_purchased:pd.DataFrame=dollars_purchased.divide(initial_prices,axis=0)
+    daily_value:pd.DataFrame=pd.DataFrame(np.dot(adj_daily_close,shares_purchased))
+    daily_value.columns=["Value"]
+    daily_value.index=adj_daily_close.index
+    return daily_value
