@@ -845,17 +845,19 @@ def display_current_vs_selected_portfolio(
 
 def display_growth_of_10000_portfolios():
     # Display Growth of Selected vs Current Portfolio
-    with st.expander("Growth of $10,000 Portfolio (Click to Hide/Show)",expanded=True):
+    with st.expander("Growth of $10,000 Portfolio (Click to Hide/Show)", expanded=True):
         # Get growth of Selected Portfolio
         daily_value = pd.DataFrame()
         daily_value = daily_value.rename(columns=["Date", "Selected", "Current"])
         daily_value.index = st.session_state.growth_of_10000.index
         df: pd.DataFrame = ps.get_growth_of_10000_portfolio(
             st.session_state.adj_daily_close,
-            st.session_state.efficient_frontier.iloc[st.session_state.selected_port, 3:],
+            st.session_state.efficient_frontier.iloc[
+                st.session_state.selected_port, 3:
+            ],
         )
         daily_value["Selected"] = df["Value"]
-        
+
         # Is Curr Portfolio Specfied?
         if not np.isnan(st.session_state.current_portfolio_return):
             # If so, get growth of current portfolio
@@ -865,24 +867,24 @@ def display_growth_of_10000_portfolios():
             df = df.set_index("Ticker")
             # df2 = ps.get_growth_of_10000_portfolio(st.session_state.adj_daily_close, df)
             # daily_value["Current"]=df2["Value"]
-            daily_value["Current"]=ps.get_growth_of_10000_portfolio(st.session_state.adj_daily_close, df)["Value"]
-                    # daily_value["Current"] = ps.get_growth_of_10000_portfolio(
+            daily_value["Current"] = ps.get_growth_of_10000_portfolio(
+                st.session_state.adj_daily_close, df
+            )["Value"]
+            # daily_value["Current"] = ps.get_growth_of_10000_portfolio(
             #     st.session_state.adj_daily_close, df
             # )
         else:
             # If not, set value of current portfolio to empty
             daily_value["Current"] = np.nan
 
-        st.session_state.growth_of_10000_portfolio=daily_value
+        st.session_state.growth_of_10000_portfolio = daily_value
 
         # Display Graph
         columns = daily_value.columns
         fig = px.line(
             daily_value,
             x=daily_value.index,  # date column
-            y=daily_value.columns[
-                0 : len(daily_value.columns)
-            ],  # Value on date
+            y=daily_value.columns[0 : len(daily_value.columns)],  # Value on date
             title="Growth of $10,000 Portfolio",
         )
         fig.update_traces(
@@ -899,10 +901,10 @@ def display_growth_of_10000_portfolios():
             yaxis_tickprefix="$",
             yaxis_tickformat=",",
         )
-        fig["data"][0]["line"]["color"]="rgb(255,0,0)"
-        fig["data"][1]["line"]["color"] = "rgb(0,0,255)"
+        fig["data"][0]["line"]["color"] = "rgb(255,0,0)"
+        fig["data"][1]["line"]["color"] = "rgb(0,255,0)"
         st.plotly_chart(fig, use_container_width=True)
-        
+
         # Display ending value of $10,000 portfolio
         df = daily_value
         columns = df.columns
