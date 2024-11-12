@@ -266,7 +266,7 @@ def get_data_from_yf(tickers: list, start, end):
 @st.cache_data
 def calc_port_stats(inv_and_constraints, risk_free_rate, adj_daily_close):
     growth_of_10000 = ps.get_growth_10000(adj_daily_close)
-    daily_returns = ps.get_daily_returns(adj_daily_close)
+    # daily_returns = ps.get_daily_returns(adj_daily_close)
     daily_ln_returns = ps.get_daily_ln_returns(adj_daily_close)
     correlation_matrix = ps.get_correlation_matrix(daily_ln_returns)
     expected_returns = ps.get_expected_returns(daily_ln_returns)
