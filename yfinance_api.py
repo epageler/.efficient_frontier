@@ -94,7 +94,8 @@ def get_names_and_inceptions(tickers: list[str]) -> Tuple[str, pd.DataFrame]:
             return err, investment_names  # return immediately if error
     if err == "":
         names_inception["Inception"] = pd.to_datetime(
-            names_inception['Inception'], unit='s', utc=True)
+            names_inception["Inception"], unit="s", utc=True
+        )
     return err, names_inception
 
 
@@ -121,10 +122,15 @@ def get_adj_daily_close(
             df Contents: Adjusted daily closing prices
     """
     # Retrieve daily
-    adj_close = yf.download(tickers, start=start_date, end=end_date, interval="1d")["Adj Close"][tickers]
+    adj_close = yf.download(
+        tickers, 
+        start=start_date,
+        end=end_date, 
+        interval="1d")["Adj Close"][tickers]
     return adj_close
 
-def get_previous_close(ticker:str)-> float:
+
+def get_previous_close(ticker: str) -> float:
     """_summary_
 
     Args:
@@ -133,12 +139,12 @@ def get_previous_close(ticker:str)-> float:
     Returns:
         float: previous day closing price
     """
-    return yf.Ticker(ticker).info['previousClose']
+    return yf.Ticker(ticker).info["previousClose"]
+
 
 # ---------------------------------------------------------------------------- #
 if __name__ == "__main__":
-    tickers = ["BIL", "AGG", "TIP", "MUB",
-               "PFF", "IVV", "IWM", "EFA", "EEM", "IYR"]
+    tickers = ["BIL", "AGG", "TIP", "MUB", "PFF", "IVV", "IWM", "EFA", "EEM", "IYR"]
     # start: str = "2023-05-30"
     # end: str = "2024-05-30"
 
@@ -149,14 +155,14 @@ if __name__ == "__main__":
     #     adj_daily_close = get_adj_daily_close(tickers, start, end)
     #     print(adj_daily_close.head(10))
     # -------------------------------------
-    
+
     # d=get_max_inception_date(["BIL", "MSFT", "DREGX"])
     # print(d)
     # t=datetime.fromtimestamp(d)
     # print(t.strftime('%m/%d/%Y'))
-    
+
     # --------------------------------------
-    
+
     # err, df = get_names_and_inceptions(tickers)
     # # df["Inception"] = pd.to_datetime(df["Inception"], unit="s", utc=True).dt.strftime(
     # #     "%Y-%m-%d"
@@ -165,7 +171,7 @@ if __name__ == "__main__":
     # print(df.info())
     # print(df)
     # --------------------------------------
-    
+
     # Get latest yield on 10-year Treasury
     # end_date = datetime.today()
     # start_date = datetime.today()-timedelta(days=7)
@@ -174,14 +180,11 @@ if __name__ == "__main__":
     # rf_rate=tnx.loc[:,"Close"].iloc[-1]
     # print(f"rf_rate: {rf_rate:.2f}%")
     # --------------------------------------
-    
+
     # Get last price of Ticker
     # last_price: float= yf.Ticker('^TNX').info['previousClose']
     # pprint(f"last_price: {last_price}")
     # --------------------------------------
-    
+
     # Get yield of 10-year Treasury
     print(f"10-year Treasury Current Yield: {get_previous_close('^TNX'):2f}%")
-
-    
-    
