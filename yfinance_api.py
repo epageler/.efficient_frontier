@@ -101,7 +101,7 @@ def get_names_and_inceptions(tickers: list[str]) -> Tuple[str, pd.DataFrame]:
 
 # ---------------------------------------------------------------------------- #
 def get_adj_daily_close(
-    tickers: list[str], start_date: str | datetime, end_date: str | datetime
+    tickers: list[str], s: str | datetime, e: str | datetime
 ) -> pd.DataFrame:
     """
     Retrieve adjusted daily closing prices for a list of tickers over a specified
@@ -122,12 +122,8 @@ def get_adj_daily_close(
             df Contents: Adjusted daily closing prices
     """
     # Retrieve daily
-    adj_close = yf.download(
-        tickers, 
-        start=start_date,
-        end=end_date, 
-        interval="1d")["Adj Close"][tickers]
-    return adj_close
+    adj = yf.download(tickers, start=s, end=e, interval="1d")["Adj Close"][tickers]
+    return adj
 
 
 def get_previous_close(ticker: str) -> float:
