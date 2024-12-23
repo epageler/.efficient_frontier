@@ -122,7 +122,7 @@ def get_adj_daily_close(
             df Contents: Adjusted daily closing prices
     """
     # Retrieve daily
-    adj = yf.download(tickers, start=start, end=end, interval="1d",auto_adjust=True)["Close"][tickers]
+    adj = yf.download(tickers, start=start, end=end, interval="1d",auto_adjust=False)["Adj Close"][tickers]
     return adj
 
 
