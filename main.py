@@ -987,6 +987,6 @@ if __name__ == "__main__":
 
         display_growth_of_10000_portfolios()
 
-        # with st.expander("Inspect session_state (Click to Show/Hide)", expanded=False):
-        #     pass
-        #     st.write(st.session_state)
+        with st.expander("Inspect session_state (Click to Show/Hide)", expanded=False):
+            pass
+            st.write(st.session_state)
