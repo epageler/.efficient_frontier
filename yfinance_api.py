@@ -141,15 +141,15 @@ def get_previous_close(ticker: str) -> float:
 # ---------------------------------------------------------------------------- #
 if __name__ == "__main__":
     tickers = ["BIL", "AGG", "TIP", "MUB", "PFF", "IVV", "IWM", "EFA", "EEM", "IYR"]
-    # start: str = "2023-05-30"
-    # end: str = "2024-05-30"
+    start: str = "2023-05-30"
+    end: str = "2024-05-30"
 
-    # err, names = get_investment_names(tickers)
-    # if err != "":
-    #     print(err)
-    # else:
-    #     adj_daily_close = get_adj_daily_close(tickers, start, end)
-    #     print(adj_daily_close.head(10))
+    err, names = get_investment_names(tickers)
+    if err != "":
+        print(err)
+    else:
+        adj_daily_close = get_adj_daily_close(tickers, start, end)
+        print(adj_daily_close.head(10))
     # -------------------------------------
 
     # d=get_max_inception_date(["BIL", "MSFT", "DREGX"])
@@ -183,4 +183,4 @@ if __name__ == "__main__":
     # --------------------------------------
 
     # Get yield of 10-year Treasury
-    print(f"10-year Treasury Current Yield: {get_previous_close('^TNX'):2f}%")
+    # print(f"10-year Treasury Current Yield: {get_previous_close('^TNX'):2f}%")
